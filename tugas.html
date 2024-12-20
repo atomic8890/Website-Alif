@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menghitung Indeks Prestasi</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #e0e5ec;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: #e0e5ec;
+            border-radius: 20px;
+            box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+            padding: 40px;
+            width: 400px;
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #555;
+        }
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            font-size: 14px;
+            color: #777;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background: #e0e5ec;
+            box-shadow: inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff;
+            border-radius: 10px;
+            font-size: 16px;
+            color: #555;
+            outline: none;
+        }
+        input:focus {
+            box-shadow: inset 2px 2px 5px #bebebe, inset -2px -2px 5px #ffffff;
+        }
+        button {
+            background: #e0e5ec;
+            border: none;
+            padding: 15px 20px;
+            font-size: 16px;
+            color: #555;
+            border-radius: 50px;
+            box-shadow: 5px 5px 15px #bebebe, -5px -5px 15px #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            box-shadow: 2px 2px 5px #bebebe, -2px -2px 5px #ffffff;
+            transform: translateY(-3px);
+        }
+        #output {
+            margin-top: 20px;
+            text-align: center;
+            color: #555;
+        }
+        #output p {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+        .progress-bar {
+            background: #e0e5ec;
+            border-radius: 20px;
+            box-shadow: inset 5px 5px 10px #bebebe, inset -5px -5px 10px #ffffff;
+            overflow: hidden;
+            height: 20px;
+            margin: 20px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            width: 0;
+            transition: width 0.5s ease-in-out;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #6a11cb;
+        }
+        .error {
+            color: #ff4d4d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Menghitung Indeks Prestasi</h2>
+        <div class="input-group">
+            <label for="quis">Quis (10%):</label>
+            <input type="number" id="quis" placeholder="Masukkan nilai 0-100">
+        </div>
+        <div class="input-group">
+            <label for="tugas">Tugas (20%):</label>
+            <input type="number" id="tugas" placeholder="Masukkan nilai 0-100">
+        </div>
+        <div class="input-group">
+            <label for="uts">UTS (30%):</label>
+            <input type="number" id="uts" placeholder="Masukkan nilai 0-100">
+        </div>
+        <div class="input-group">
+            <label for="uas">UAS (40%):</label>
+            <input type="number" id="uas" placeholder="Masukkan nilai 0-100">
+        </div>
+        <button onclick="hitungIndeks()">Hitung</button>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        function hitungIndeks() {
+            const quis = parseFloat(document.getElementById('quis').value) || 0;
+            const tugas = parseFloat(document.getElementById('tugas').value) || 0;
+            const uts = parseFloat(document.getElementById('uts').value) || 0;
+            const uas = parseFloat(document.getElementById('uas').value) || 0;
+
+            if (quis < 0 || quis > 100 || tugas < 0 || tugas > 100 || uts < 0 || uts > 100 || uas < 0 || uas > 100) {
+                document.getElementById('output').innerHTML = `<p class="error">Nilai harus antara 0-100!</p>`;
+                return;
+            }
+
+            const total = (quis * 0.1) + (tugas * 0.2) + (uts * 0.3) + (uas * 0.4);
+            let indeks, keterangan;
+
+            if (total >= 80) {
+                indeks = "A";
+                keterangan = "Lulus dengan Sangat Baik";
+            } else if (total >= 68) {
+                indeks = "B";
+                keterangan = "Lulus dengan Baik";
+            } else if (total >= 55) {
+                indeks = "C";
+                keterangan = "Lulus dengan Cukup";
+            } else if (total >= 38) {
+                indeks = "D";
+                keterangan = "Lulus dengan Kurang";
+            } else {
+                indeks = "E";
+                keterangan = "Tidak Lulus";
+            }
+
+            const progressFill = document.getElementById('progressFill');
+            progressFill.style.width = `${total}%`;
+
+            document.getElementById('output').innerHTML = `
+                <p>Indeks Prestasi: <span class="highlight">${indeks}</span></p>
+                <p>Keterangan: ${keterangan}</p>
+            `;
+        }
+    </script>
+</body>
+</html>
